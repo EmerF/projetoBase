@@ -1,0 +1,64 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+	<ui:define name="body">
+		<h:form prependId="false">
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton value="#{messages['button.save']}" action="#{bolsaEstudoEditMB.insert}"
+						rendered="#{!bolsaEstudoEditMB.updateMode}" ajax="false" />
+					<p:commandButton value="#{messages['button.save']}" action="#{bolsaEstudoEditMB.update}"
+						rendered="#{bolsaEstudoEditMB.updateMode}" ajax="false" />
+					<p:commandButton value="#{messages['button.delete']}" onclick="confirmation.show()"
+						rendered="#{bolsaEstudoEditMB.updateMode}" type="button" immediate="true" ajax="false" />
+					<p:confirmDialog message="#{messages['label.confirm.delete']}" showEffect="bounce" hideEffect="explode"
+						header="#{messages['label.dialog.delete']}" severity="alert" widgetVar="confirmation">
+						<h:commandButton value="#{messages['button.dialog.yes']}" action="#{bolsaEstudoEditMB.delete}" immediate="true"
+							ajax="false" />
+						<h:commandButton value="#{messages['button.dialog.no']}" onclick="confirmation.hide()" type="button" />
+					</p:confirmDialog>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<br />
+
+			<p:fieldset legend="#{messages['bolsaEstudo.label']}" toggleable="true" toggleSpeed="500">
+				<h:panelGrid id="fieldsbolsaEstudo" columns="3">
+				
+					<h:outputLabel value="#{messages['bolsaEstudo.label.numero']}: " for="numero" styleClass="text-input" />
+										
+					<h:outputText id="numero" value="#{bolsaEstudoEditMB.bean.numero}" />
+					
+					<p:message for="numero" />
+						
+					<h:outputLabel value="#{messages['bolsaEstudo.label.porcentagem']}: " for="porcentagem" styleClass="text-input" />
+					
+					<h:inputText id="porcentagem" value="#{bolsaEstudoEditMB.bean.porcentagem}"
+						title="#{messages['bolsaEstudo.alt.porcentagem']}" />
+					
+					<p:message for="porcentagem" />
+						
+					<h:outputLabel value="#{messages['bolsaEstudo.label.dataInicio']}: " for="dataInicio" styleClass="text-input" />
+					
+					<p:calendar id="dataInicio" value="#{bolsaEstudoEditMB.bean.dataInicio}"
+					   pattern="#{messages['label.date.pattern']}" navigator="true" showButtonPanel="true"
+					   locale="#{locales.currentLocale}" title="#{messages['bolsaEstudo.alt.dataInicio']}" />
+							 
+					<p:message for="dataInicio" />
+						
+					<h:outputLabel value="#{messages['bolsaEstudo.label.dataFim']}: " for="dataFim" styleClass="text-input" />
+					
+					<p:calendar id="dataFim" value="#{bolsaEstudoEditMB.bean.dataFim}"
+					   pattern="#{messages['label.date.pattern']}" navigator="true" showButtonPanel="true"
+					   locale="#{locales.currentLocale}" title="#{messages['bolsaEstudo.alt.dataFim']}" />
+							 
+					<p:message for="dataFim" />
+						
+				</h:panelGrid>
+			</p:fieldset>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>

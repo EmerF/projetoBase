@@ -1,0 +1,81 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+	<ui:define name="body">
+		<h:form prependId="false">
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton value="#{messages['button.save']}" action="#{enderecoEditMB.insert}"
+						rendered="#{!enderecoEditMB.updateMode}" ajax="false" />
+					<p:commandButton value="#{messages['button.save']}" action="#{enderecoEditMB.update}"
+						rendered="#{enderecoEditMB.updateMode}" ajax="false" />
+					<p:commandButton value="#{messages['button.delete']}" onclick="confirmation.show()"
+						rendered="#{enderecoEditMB.updateMode}" type="button" immediate="true" ajax="false" />
+					<p:confirmDialog message="#{messages['label.confirm.delete']}" showEffect="bounce" hideEffect="explode"
+						header="#{messages['label.dialog.delete']}" severity="alert" widgetVar="confirmation">
+						<h:commandButton value="#{messages['button.dialog.yes']}" action="#{enderecoEditMB.delete}" immediate="true"
+							ajax="false" />
+						<h:commandButton value="#{messages['button.dialog.no']}" onclick="confirmation.hide()" type="button" />
+					</p:confirmDialog>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<br />
+
+			<p:fieldset legend="#{messages['endereco.label']}" toggleable="true" toggleSpeed="500">
+				<h:panelGrid id="fieldsendereco" columns="3">
+				
+					<h:outputLabel value="#{messages['endereco.label.codigo']}: " for="codigo" styleClass="text-input" />
+										
+					<h:outputText id="codigo" value="#{enderecoEditMB.bean.codigo}" />
+					
+					<p:message for="codigo" />
+						
+					<h:outputLabel value="#{messages['endereco.label.logradouro']}: " for="logradouro" styleClass="text-input" />
+					
+					<h:inputText id="logradouro" value="#{enderecoEditMB.bean.logradouro}"
+						title="#{messages['endereco.alt.logradouro']}" />
+					
+					<p:message for="logradouro" />
+						
+					<h:outputLabel value="#{messages['endereco.label.cidade']}: " for="cidade" styleClass="text-input" />
+					
+					<h:inputText id="cidade" value="#{enderecoEditMB.bean.cidade}"
+						title="#{messages['endereco.alt.cidade']}" />
+					
+					<p:message for="cidade" />
+						
+					<h:outputLabel value="#{messages['endereco.label.estado']}: " for="estado" styleClass="text-input" />
+					
+					<h:inputText id="estado" value="#{enderecoEditMB.bean.estado}"
+						title="#{messages['endereco.alt.estado']}" />
+					
+					<p:message for="estado" />
+						
+					<h:outputLabel value="#{messages['endereco.label.cep']}: " for="cep" styleClass="text-input" />
+					
+					<h:inputText id="cep" value="#{enderecoEditMB.bean.cep}"
+						title="#{messages['endereco.alt.cep']}" />
+					
+					<p:message for="cep" />
+						
+				</h:panelGrid>
+			</p:fieldset>
+			
+		<p:fieldset legend="#{messages['estudante.label']}" toggleable="true">
+			<p:pickList id="pickListEstudante" value="#{enderecoEditMB.estudanteList}"
+				var="varEstudante" effect="bounce" itemValue="#{varEstudante}"
+				itemLabel="#{varEstudante.id}" converter="ConversorEstudante"
+				showSourceControls="true" showTargetControls="true" showCheckbox="true"
+				showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" immediate="true">
+				<f:facet name="sourceCaption">"#{messages['estudante.label']}"</f:facet>
+				<f:facet name="targetCaption"> #{messages['estudante.label']} "do(a)" #{messages['endereco.label']} </f:facet>
+				<p:ajax  event="transfer" listener="#{enderecoEditMB.onTransfer}" update="pickListEstudante" />
+			</p:pickList>
+		</p:fieldset>						
+						
+		</h:form>
+	</ui:define>
+</ui:composition>

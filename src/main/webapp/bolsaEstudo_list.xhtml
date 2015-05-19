@@ -1,0 +1,64 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+	<ui:define name="body">
+		<h:form>
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton title="#{messages['button.new']}" icon="ui-icon-document" action="#{bolsaEstudoListMB.getNextView}"
+						actionListener="#{bolsaEstudoListMB.clear}" ajax="false" />
+
+					<p:commandButton title="#{messages['button.delete']}" icon="ui-icon-trash" onclick="confirmation.show()"
+						type="button" immediate="true" ajax="false" />
+
+					<p:confirmDialog message="#{messages['label.confirm.delete']}" showEffect="bounce" hideEffect="explode"
+						header="#{messages['label.dialog.alert']}!" severity="alert" widgetVar="confirmation">
+
+						<h:commandButton value="#{messages['button.dialog.yes']}" action="#{bolsaEstudoListMB.deleteSelection}"
+							actionListener="#{bolsaEstudoListMB.clear}" />
+						<h:commandButton value="#{messages['button.dialog.no']}" onclick="confirmation.hide()" type="button" />
+					</p:confirmDialog>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:dataTable id="list" var="bean" value="#{bolsaEstudoListMB.resultList}">
+				<f:facet name="header">#{messages['bolsaEstudo.list.table.title']}</f:facet>
+				<p:column style="width:2%;">
+					<h:selectBooleanCheckbox value="#{bolsaEstudoListMB.selection[bean.numero]}"></h:selectBooleanCheckbox>
+				</p:column>
+				
+				<p:column style="width:5%;" sortBy="#{bean.numero}">
+					<f:facet name="header">#{messages['bolsaEstudo.label.numero']}</f:facet>
+					<h:outputText value="#{bean.numero}" />
+				</p:column>
+						
+				<p:column sortBy="#{bean.porcentagem}">
+					<f:facet name="header">#{messages['bolsaEstudo.label.porcentagem']}</f:facet>
+					<h:commandLink action="#{bolsaEstudoListMB.getNextView}" actionListener="#{bolsaEstudoListMB.clear}">
+						<h:outputText value="#{bean.porcentagem}" />
+						<f:param name="id" value="#{bean.numero}" />
+					</h:commandLink>
+				</p:column>
+					
+				<p:column sortBy="#{bean.dataInicio}">
+					<f:facet name="header">#{messages['bolsaEstudo.label.dataInicio']}</f:facet>
+					<h:commandLink action="#{bolsaEstudoListMB.getNextView}" actionListener="#{bolsaEstudoListMB.clear}">
+						<h:outputText value="#{bean.dataInicio}" />
+						<f:param name="id" value="#{bean.numero}" />
+					</h:commandLink>
+				</p:column>
+					
+				<p:column sortBy="#{bean.dataFim}">
+					<f:facet name="header">#{messages['bolsaEstudo.label.dataFim']}</f:facet>
+					<h:commandLink action="#{bolsaEstudoListMB.getNextView}" actionListener="#{bolsaEstudoListMB.clear}">
+						<h:outputText value="#{bean.dataFim}" />
+						<f:param name="id" value="#{bean.numero}" />
+					</h:commandLink>
+				</p:column>
+					
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

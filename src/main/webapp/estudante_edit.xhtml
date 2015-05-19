@@ -1,0 +1,112 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+	<ui:define name="body">
+		<h:form prependId="false">
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton value="#{messages['button.save']}" action="#{estudanteEditMB.insert}"
+						rendered="#{!estudanteEditMB.updateMode}" ajax="false" />
+					<p:commandButton value="#{messages['button.save']}" action="#{estudanteEditMB.update}"
+						rendered="#{estudanteEditMB.updateMode}" ajax="false" />
+					<p:commandButton value="#{messages['button.delete']}" onclick="confirmation.show()"
+						rendered="#{estudanteEditMB.updateMode}" type="button" immediate="true" ajax="false" />
+					<p:confirmDialog message="#{messages['label.confirm.delete']}" showEffect="bounce" hideEffect="explode"
+						header="#{messages['label.dialog.delete']}" severity="alert" widgetVar="confirmation">
+						<h:commandButton value="#{messages['button.dialog.yes']}" action="#{estudanteEditMB.delete}" immediate="true"
+							ajax="false" />
+						<h:commandButton value="#{messages['button.dialog.no']}" onclick="confirmation.hide()" type="button" />
+					</p:confirmDialog>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<br />
+
+			<p:fieldset legend="#{messages['estudante.label']}" toggleable="true" toggleSpeed="500">
+				<h:panelGrid id="fieldsestudante" columns="3">
+				
+					<h:outputLabel value="#{messages['estudante.label.dataMatricula']}: " for="dataMatricula" styleClass="text-input" />
+					
+					<p:calendar id="dataMatricula" value="#{estudanteEditMB.bean.dataMatricula}"
+					   pattern="#{messages['label.date.pattern']}" navigator="true" showButtonPanel="true"
+					   locale="#{locales.currentLocale}" title="#{messages['estudante.alt.dataMatricula']}" />
+							 
+					<p:message for="dataMatricula" />
+						
+					<h:outputLabel value="#{messages['estudante.label.numeroMatricula']}: " for="numeroMatricula" styleClass="text-input" />
+					
+					<h:inputText id="numeroMatricula" value="#{estudanteEditMB.bean.numeroMatricula}"
+						title="#{messages['estudante.alt.numeroMatricula']}" />
+					
+					<p:message for="numeroMatricula" />
+						
+					<h:outputLabel value="#{messages['turma.label']}: " for="turma" styleClass="text-input" />
+				    <p:selectOneMenu id="turma" value="#{estudanteEditMB.bean.turma}"  effect="fade" converter="ConversorTurma">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{estudanteEditMB.turmaList}" var="varTurma" itemLabel="#{varTurma.id}"  itemValue="#{varTurma}" />						
+					</p:selectOneMenu>
+					<p:message for="turma" />								  
+								 
+					<h:outputLabel value="#{messages['bolsaEstudo.label']}: " for="bolsaEstudo" styleClass="text-input" />
+				    <p:selectOneMenu id="bolsaEstudo" value="#{estudanteEditMB.bean.bolsaEstudo}"  effect="fade" converter="ConversorBolsaEstudo">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{estudanteEditMB.bolsaEstudoList}" var="varBolsaEstudo" itemLabel="#{varBolsaEstudo.numero}"  itemValue="#{varBolsaEstudo}" />						
+					</p:selectOneMenu>
+					<p:message for="bolsaEstudo" />								  
+								 
+					<h:outputLabel value="#{messages['estudante.label.id']}: " for="id" styleClass="text-input" />
+										
+					<h:outputText id="id" value="#{estudanteEditMB.bean.id}" />
+					
+					<p:message for="id" />
+						
+					<h:outputLabel value="#{messages['estudante.label.cpf']}: " for="cpf" styleClass="text-input" />
+					
+					<h:inputText id="cpf" value="#{estudanteEditMB.bean.cpf}"
+						title="#{messages['estudante.alt.cpf']}" />
+					
+					<p:message for="cpf" />
+						
+					<h:outputLabel value="#{messages['estudante.label.nome']}: " for="nome" styleClass="text-input" />
+					
+					<h:inputText id="nome" value="#{estudanteEditMB.bean.nome}"
+						title="#{messages['estudante.alt.nome']}" />
+					
+					<p:message for="nome" />
+						
+					<h:outputLabel value="#{messages['estudante.label.dataNascimento']}: " for="dataNascimento" styleClass="text-input" />
+					
+					<p:calendar id="dataNascimento" value="#{estudanteEditMB.bean.dataNascimento}"
+					   pattern="#{messages['label.date.pattern']}" navigator="true" showButtonPanel="true"
+					   locale="#{locales.currentLocale}" title="#{messages['estudante.alt.dataNascimento']}" />
+							 
+					<p:message for="dataNascimento" />
+						
+					<h:outputLabel value="#{messages['estudante.label.genero']}: " for="genero" styleClass="text-input" />
+					
+					<p:selectOneMenu id="genero" effect="fade" value="#{estudanteEditMB.bean.genero}">
+						<f:selectItems value="#{estudanteEditMB.genero}" />
+					</p:selectOneMenu>					
+								
+					<p:message for="genero" />
+						
+				</h:panelGrid>
+			</p:fieldset>
+			
+		<p:fieldset legend="#{messages['endereco.label']}" toggleable="true">
+			<p:pickList id="pickListEndereco" value="#{estudanteEditMB.enderecoList}"
+				var="varEndereco" effect="bounce" itemValue="#{varEndereco}"
+				itemLabel="#{varEndereco.codigo}" converter="ConversorEndereco"
+				showSourceControls="true" showTargetControls="true" showCheckbox="true"
+				showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" immediate="true">
+				<f:facet name="sourceCaption">"#{messages['endereco.label']}"</f:facet>
+				<f:facet name="targetCaption"> #{messages['endereco.label']} "do(a)" #{messages['estudante.label']} </f:facet>
+				<p:ajax  event="transfer" listener="#{estudanteEditMB.onTransfer}" update="pickListEndereco" />
+			</p:pickList>
+		</p:fieldset>						
+						
+		</h:form>
+	</ui:define>
+</ui:composition>

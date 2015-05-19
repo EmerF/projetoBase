@@ -1,0 +1,98 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+	<ui:define name="body">
+		<h:form prependId="false">
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton value="#{messages['button.save']}" action="#{funcionarioEditMB.insert}"
+						rendered="#{!funcionarioEditMB.updateMode}" ajax="false" />
+					<p:commandButton value="#{messages['button.save']}" action="#{funcionarioEditMB.update}"
+						rendered="#{funcionarioEditMB.updateMode}" ajax="false" />
+					<p:commandButton value="#{messages['button.delete']}" onclick="confirmation.show()"
+						rendered="#{funcionarioEditMB.updateMode}" type="button" immediate="true" ajax="false" />
+					<p:confirmDialog message="#{messages['label.confirm.delete']}" showEffect="bounce" hideEffect="explode"
+						header="#{messages['label.dialog.delete']}" severity="alert" widgetVar="confirmation">
+						<h:commandButton value="#{messages['button.dialog.yes']}" action="#{funcionarioEditMB.delete}" immediate="true"
+							ajax="false" />
+						<h:commandButton value="#{messages['button.dialog.no']}" onclick="confirmation.hide()" type="button" />
+					</p:confirmDialog>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<br />
+
+			<p:fieldset legend="#{messages['funcionario.label']}" toggleable="true" toggleSpeed="500">
+				<h:panelGrid id="fieldsfuncionario" columns="3">
+				
+					<h:outputLabel value="#{messages['funcionario.label.dataMatricula']}: " for="dataMatricula" styleClass="text-input" />
+					
+					<p:calendar id="dataMatricula" value="#{funcionarioEditMB.bean.dataMatricula}"
+					   pattern="#{messages['label.date.pattern']}" navigator="true" showButtonPanel="true"
+					   locale="#{locales.currentLocale}" title="#{messages['funcionario.alt.dataMatricula']}" />
+							 
+					<p:message for="dataMatricula" />
+						
+					<h:outputLabel value="#{messages['funcionario.label.numeroMatricula']}: " for="numeroMatricula" styleClass="text-input" />
+					
+					<h:inputText id="numeroMatricula" value="#{funcionarioEditMB.bean.numeroMatricula}"
+						title="#{messages['funcionario.alt.numeroMatricula']}" />
+					
+					<p:message for="numeroMatricula" />
+								 
+					<h:outputLabel value="#{messages['funcionario.label.id']}: " for="id" styleClass="text-input" />
+										
+					<h:outputText id="id" value="#{funcionarioEditMB.bean.id}" />
+					
+					<p:message for="id" />
+						
+					<h:outputLabel value="#{messages['funcionario.label.cpf']}: " for="cpf" styleClass="text-input" />
+					
+					<h:inputText id="cpf" value="#{funcionarioEditMB.bean.cpf}"
+						title="#{messages['funcionario.alt.cpf']}" />
+					
+					<p:message for="cpf" />
+						
+					<h:outputLabel value="#{messages['funcionario.label.nome']}: " for="nome" styleClass="text-input" />
+					
+					<h:inputText id="nome" value="#{funcionarioEditMB.bean.nome}"
+						title="#{messages['funcionario.alt.nome']}" />
+					
+					<p:message for="nome" />
+						
+					<h:outputLabel value="#{messages['funcionario.label.dataNascimento']}: " for="dataNascimento" styleClass="text-input" />
+					
+					<p:calendar id="dataNascimento" value="#{funcionarioEditMB.bean.dataNascimento}"
+					   pattern="#{messages['label.date.pattern']}" navigator="true" showButtonPanel="true"
+					   locale="#{locales.currentLocale}" title="#{messages['funcionario.alt.dataNascimento']}" />
+							 
+					<p:message for="dataNascimento" />
+						
+					<h:outputLabel value="#{messages['funcionario.label.genero']}: " for="genero" styleClass="text-input" />
+					
+					<p:selectOneMenu id="genero" effect="fade" value="#{funcionarioEditMB.bean.genero}">
+						<f:selectItems value="#{funcionarioEditMB.genero}" />
+					</p:selectOneMenu>					
+								
+					<p:message for="genero" />
+						
+				</h:panelGrid>
+			</p:fieldset>
+			
+		<p:fieldset legend="#{messages['endereco.label']}" toggleable="true">
+			<p:pickList id="pickListEndereco" value="#{funcionarioEditMB.enderecoList}"
+				var="varEndereco" effect="bounce" itemValue="#{varEndereco}"
+				itemLabel="#{varEndereco.codigo}" converter="ConversorEndereco"
+				showSourceControls="true" showTargetControls="true" showCheckbox="true"
+				showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" immediate="true">
+				<f:facet name="sourceCaption">"#{messages['endereco.label']}"</f:facet>
+				<f:facet name="targetCaption"> #{messages['endereco.label']} "do(a)" #{messages['funcionario.label']} </f:facet>
+				<p:ajax  event="transfer" listener="#{funcionarioEditMB.onTransfer}" update="pickListEndereco" />
+			</p:pickList>
+		</p:fieldset>						
+						
+		</h:form>
+	</ui:define>
+</ui:composition>
